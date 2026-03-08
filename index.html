@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Europa 2025 🗺️</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  // ════════════════════════════════════════════
+  // 🔧 ÎNLOCUIEȘTE CU DATELE TALE FIREBASE
+  // ════════════════════════════════════════════
+  const firebaseConfig = {
+  apiKey: "AIzaSyCwmH3DGlE8U9Zke0inmfPe11UghsZPv24",
+  authDomain: "co-europa-2026.firebaseapp.com",
+  databaseURL: "https://co-europa-2026-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "co-europa-2026",
+  storageBucket: "co-europa-2026.firebasestorage.app",
+  messagingSenderId: "533032420411",
+  appId: "1:533032420411:web:be361409bba3130ff8081e"
+};
+  // ════════════════════════════════════════════
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  window._db = db;
+  window._dbRef = ref;
+  window._dbSet = set;
+  window._dbGet = get;
+  window._dbOnValue = onValue;
+  window._dbUpdate = update;
+  window._firebaseReady = true;
+  document.dispatchEvent(new Event('firebaseReady'));
+</script>
+
+<style>
+:root {
+  --bg: #0F0E0C;
+  --surface: #1A1814;
+  --surface2: #242018;
+  --surface3: #2E2A22;
+  --border: #3A342A;
+  --border-light: #4A4238;
+  --cream: #F0E8D8;
+  --cream-dim: #A09080;
+  --amber: #D4820A;
+  --amber-light: #F0A830;
+  --amber-dim: #7A4A05;
+  --terracotta: #C4622D;
+  --terra-light: #E8834A;
+  --sage: #5C8A5E;
+  --sage-light: #7AAF7C;
+  --blue: #3A6A9A;
+  --blue-light: #5A8ABB;
+  --danger: #C43030;
+  --success: #3A8A3A;
+  --radius: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  font-size: 15px;
+}
+
+/* ── LOCK SCREEN ── */
+#lockScreen {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 1000;
+  padding: 32px;
+}
+
+.lock-glow {
+  position: absolute;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(212,130,10,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.lock-icon {
+  font-size: 48px;
+  margin-bottom: 24px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+.lock-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: var(--cream);
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.lock-subtitle {
+  font-size: 13px;
+  color: var(--cream-dim);
+  margin-bottom: 40px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.lock-input-wrap {
+  width: 100%;
+  max-width: 320px;
+  position: relative;
+}
+
+.lock-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 50px 16px 20px;
+  color: var(--cream);
+  font-size: 18px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 4px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.lock-input:focus { border-color: var(--amber); }
+.lock-input.error { border-color: var(--danger); animation: shake 0.3s; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.lock-btn {
+  width: 100%;
+  max-width: 320px;
+  margin-top: 12px;
+  padding: 16px;
+  background: var(--amber);
+  color: #000;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  letter-spacing: 1px;
+}
+
+.lock-btn:active { transform: scale(0.98); background: var(--amber-light); }
+
+.lock-error {
+  color: var(--danger);
+  font-size: 13px;
+  margin-top: 10px;
+  height: 18px;
+  text-align: center;
+}
+
+/* ── APP SHELL ── */
+#app { display: none; }
+#app.visible { display: block; }
+
+/* ── TOP BAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15,14,12,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.topbar-title {
+  flex: 1;
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  color: var(--cream);
+}
+
+.topbar-title span {
+  font-style: italic;
+  color: var(--amber-light);
+}
+
+.sync-indicator {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+.sync-indicator.syncing {
+  background: var(--amber);
+  animation: blink 0.5s infinite;
+}
+
+.sync-indicator.offline { background: var(--danger); }
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.topbar-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--cream-dim);
+  padding: 8px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+.topbar-btn:active { background: var(--surface3); }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+  padding: 28px 20px 24px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 50%, rgba(212,130,10,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 20%, rgba(58,106,154,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  color: var(--cream);
+}
+
+.hero-title em { font-style: italic; color: var(--amber-light); }
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.stat-box {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--amber-light);
+  display: block;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.stat-lbl {
+  font-size: 10px;
+  color: var(--cream-dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── ROUTE SCROLL ── */
+.route-scroll {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  padding: 12px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+}
+.route-scroll::-webkit-scrollbar { display: none; }
+
+.route-city {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--amber-light);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.route-arr {
+  color: var(--border-light);
+  margin: 0 6px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* ── SECTION DIVIDER ── */
+.section-divider {
+  padding: 24px 20px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-divider-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.section-divider-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--cream-dim);
+  white-space: nowrap;
+  font-style: italic;
+}
+
+/* ── DAY CARD ── */
+.day-card {
+  margin: 0 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.day-card.expanded { border-color: var(--border-light); }
+
+/* Card header — tap to expand */
+.day-header {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: stretch;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.day-num-col {
+  background: var(--surface2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 0;
+}
+
+.day-zi {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--amber-dim);
+  text-transform: uppercase;
+}
+
+.day-nr {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--amber-light);
+  line-height: 1;
+}
+
+.day-info {
+  padding: 12px 14px;
+  min-width: 0;
+}
+
+.day-date {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  color: var(--cream-dim);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.day-route {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  color: var(--cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.day-route .arr { color: var(--terracotta); font-style: italic; }
+
+.day-right {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+}
+
+.day-km {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--cream-dim);
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 7px;
+}
+
+.day-chevron {
+  color: var(--cream-dim);
+  font-size: 14px;
+  transition: transform 0.3s;
+}
+
+.day-card.expanded .day-chevron { transform: rotate(180deg); }
+
+/* Card body */
+.day-body {
+  display: none;
+  border-top: 1px solid var(--border);
+}
+
+.day-card.expanded .day-body { display: block; }
+
+/* Warning */
+.day-warning {
+  background: rgba(196,98,45,0.1);
+  border-left: 3px solid var(--terracotta);
+  padding: 10px 16px;
+  font-size: 12px;
+  color: var(--terra-light);
+  line-height: 1.5;
+}
+
+/* ── STOPS ── */
+.stops-section {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-label-sm {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.add-btn {
+  background: var(--surface3);
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  color: var(--amber);
+  padding: 3px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.add-btn:active { background: var(--border); }
+
+.stop-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+
+.stop-item:last-child { margin-bottom: 0; }
+
+.stop-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.dot-start { background: var(--surface3); border: 1px solid var(--border-light); }
+.dot-pause { background: rgba(92,138,94,0.2); border: 1px solid var(--sage); }
+.dot-visit { background: rgba(58,106,154,0.2); border: 1px solid var(--blue); }
+.dot-scenic { background: rgba(212,130,10,0.2); border: 1px solid var(--amber); }
+.dot-end { background: rgba(196,98,45,0.2); border: 1px solid var(--terracotta); }
+
+.stop-content { flex: 1; min-width: 0; }
+
+.stop-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 3px;
+}
+
+.stop-desc {
+  font-size: 12px;
+  color: var(--cream-dim);
+  line-height: 1.5;
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+
+.tag {
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-family: 'DM Mono', monospace;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.tag-pause { background: rgba(92,138,94,0.15); color: var(--sage-light); border: 1px solid rgba(92,138,94,0.3); }
+.tag-vizita { background: rgba(58,106,154,0.15); color: var(--blue-light); border: 1px solid rgba(58,106,154,0.3); }
+.tag-panorama { background: rgba(212,130,10,0.15); color: var(--amber-light); border: 1px solid rgba(212,130,10,0.3); }
+.tag-pranz { background: rgba(196,98,45,0.15); color: var(--terra-light); border: 1px solid rgba(196,98,45,0.3); }
+
+.stop-edit-row {
+  display: flex; gap: 6px; margin-top: 6px;
+}
+
+.stop-edit-btn {
+  font-size: 10px;
+  color: var(--cream-dim);
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.stop-edit-btn.del { color: var(--danger); }
+.stop-edit-btn:active { background: var(--border); }
+
+/* ── ACCOMMODATION ── */
+.accom-section {
+  padding: 14px 16px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+
+.accom-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.accom-icon-box { font-size: 22px; flex-shrink: 0; }
+
+.accom-info-col { flex: 1; min-width: 0; }
+
+.accom-label-sm {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--cream-dim);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.accom-name-display {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  color: var(--cream);
+}
+
+.accom-nights-badge {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.accom-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: var(--terracotta);
+  display: block;
+  line-height: 1;
+}
+
+.accom-nl {
+  font-size: 9px;
+  color: var(--cream-dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.accom-edit-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.accom-field {
+  flex: 1;
+  min-width: 140px;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--cream);
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.accom-field:focus { border-color: var(--amber); }
+.accom-field::placeholder { color: var(--cream-dim); opacity: 0.5; }
+
+.accom-link-btn {
+  padding: 8px 12px;
+  background: var(--amber-dim);
+  border: 1px solid var(--amber);
+  border-radius: 6px;
+  color: var(--amber-light);
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── NOTES ── */
+.notes-section {
+  padding: 14px 16px;
+}
+
+.notes-textarea {
+  width: 100%;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--cream);
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  min-height: 70px;
+  transition: border-color 0.2s;
+}
+
+.notes-textarea:focus { border-color: var(--amber); }
+.notes-textarea::placeholder { color: var(--cream-dim); opacity: 0.4; }
+
+.notes-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+  gap: 8px;
+}
+
+.save-btn {
+  padding: 8px 18px;
+  background: var(--amber);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+}
+
+.save-btn:active { background: var(--amber-light); transform: scale(0.97); }
+.save-btn.saved { background: var(--success); color: #fff; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 16px 16px 0 0;
+  width: 100%;
+  max-width: 600px;
+  padding: 24px 20px 40px;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-overlay.open .modal { transform: translateY(0); }
+
+.modal-handle {
+  width: 40px; height: 4px;
+  background: var(--border-light);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--cream);
+  margin-bottom: 18px;
+}
+
+.modal-field-group { margin-bottom: 14px; }
+
+.modal-label {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 1px;
+  color: var(--cream-dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.modal-input, .modal-textarea, .modal-select {
+  width: 100%;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 11px 14px;
+  color: var(--cream);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.modal-input:focus, .modal-textarea:focus, .modal-select:focus { border-color: var(--amber); }
+.modal-input::placeholder, .modal-textarea::placeholder { color: var(--cream-dim); opacity: 0.4; }
+.modal-select { appearance: none; cursor: pointer; }
+.modal-textarea { resize: none; min-height: 80px; line-height: 1.5; }
+
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-cancel {
+  padding: 13px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--cream-dim);
+  font-size: 14px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.modal-confirm {
+  padding: 13px;
+  background: var(--amber);
+  border: none;
+  border-radius: 6px;
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.modal-cancel:active { background: var(--border); }
+.modal-confirm:active { background: var(--amber-light); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--surface2);
+  border: 1px solid var(--border-light);
+  border-radius: 24px;
+  padding: 10px 20px;
+  font-size: 13px;
+  color: var(--cream);
+  z-index: 9999;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { border-color: var(--sage); color: var(--sage-light); }
+.toast.error { border-color: var(--danger); color: #ff6b6b; }
+
+/* ── STAY DAYS ── */
+.stay-days { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+
+.stay-day { margin-bottom: 14px; }
+.stay-day:last-child { margin-bottom: 0; }
+
+.stay-day-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.stay-day-items { list-style: none; }
+
+.stay-day-items li {
+  font-size: 13px;
+  color: var(--cream-dim);
+  padding: 3px 0 3px 14px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.stay-day-items li::before {
+  content: '·';
+  position: absolute; left: 0;
+  color: var(--terracotta);
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+/* Connection status */
+.conn-status {
+  text-align: center;
+  padding: 6px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 1px;
+}
+
+.conn-status.online { color: var(--sage-light); background: rgba(92,138,94,0.1); }
+.conn-status.offline { color: var(--terra-light); background: rgba(196,98,45,0.1); }
+
+/* Setup instructions overlay */
+#setupBanner {
+  background: rgba(212,130,10,0.1);
+  border: 1px solid var(--amber-dim);
+  border-radius: var(--radius);
+  margin: 12px;
+  padding: 14px;
+  font-size: 12px;
+  color: var(--amber-light);
+  line-height: 1.6;
+  display: none;
+}
+
+#setupBanner.show { display: block; }
+#setupBanner strong { color: var(--amber); }
+#setupBanner a { color: var(--amber); }
+
+@media (min-width: 600px) {
+  .day-card { margin: 0 20px 20px; }
+  .hero { padding: 36px 24px 28px; }
+  .hero-title { font-size: 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOCK SCREEN -->
+<div id="lockScreen">
+  <div class="lock-glow"></div>
+  <div class="lock-icon">🗺️</div>
+  <h1 class="lock-title">Europa 2025</h1>
+  <p class="lock-subtitle">ACCES PRIVAT · GRUPUL NOSTRU</p>
+  <div class="lock-input-wrap">
+    <input type="password" class="lock-input" id="pwInput" placeholder="••••••••" maxlength="20" autocomplete="off">
+  </div>
+  <button class="lock-btn" onclick="checkPassword()">INTRĂ</button>
+  <p class="lock-error" id="lockError"></p>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-title">Europa <span>2025</span></div>
+    <div class="sync-indicator" id="syncDot" title="Status sincronizare"></div>
+    <button class="topbar-btn" onclick="showAbout()">ℹ️</button>
+    <button class="topbar-btn" onclick="logout()">Ieși</button>
+  </div>
+
+  <div id="connStatus" class="conn-status online">● Conectat · sincronizare activă</div>
+
+  <div id="setupBanner">
+    ⚠️ <strong>Firebase nu este configurat.</strong> Datele nu se sincronizează între dispozitive. 
+    Urmează <strong>GHID_SETUP.html</strong> pentru configurare gratuită în 10 minute.
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Itinerar · Iulie 2025</div>
+    <h1 class="hero-title">O vară prin <em>inima Europei</em></h1>
+    <div class="stats-row">
+      <div class="stat-box"><span class="stat-num">15</span><span class="stat-lbl">Zile</span></div>
+      <div class="stat-box"><span class="stat-num">~5.1k</span><span class="stat-lbl">Km</span></div>
+      <div class="stat-box"><span class="stat-num">8</span><span class="stat-lbl">Țări</span></div>
+      <div class="stat-box"><span class="stat-num">9</span><span class="stat-lbl">Cazări</span></div>
+    </div>
+  </div>
+
+  <div class="route-scroll">
+    <span class="route-city">Cluj</span><span class="route-arr">→</span>
+    <span class="route-city">Budapesta</span><span class="route-arr">→</span>
+    <span class="route-city">Praga</span><span class="route-arr">→</span>
+    <span class="route-city">Amsterdam</span><span class="route-arr">→</span>
+    <span class="route-city">Luxemburg</span><span class="route-arr">→</span>
+    <span class="route-city">Schaan</span><span class="route-arr">→</span>
+    <span class="route-city">St. Moritz</span><span class="route-arr">→</span>
+    <span class="route-city">Rimini</span><span class="route-arr">→</span>
+    <span class="route-city">San Marino · Toscana</span><span class="route-arr">→</span>
+    <span class="route-city">Pisa</span><span class="route-arr">→</span>
+    <span class="route-city">Viena</span><span class="route-arr">→</span>
+    <span class="route-city">Cluj 🏠</span>
+  </div>
+
+  <div id="daysContainer"></div>
+
+  <div style="height:40px"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnBg(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalTitle">Adaugă oprire</div>
+    <div id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal()">Anulează</button>
+      <button class="modal-confirm" id="modalConfirm" onclick="confirmModal()">Salvează</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+// CONFIG — SCHIMBĂ PAROLA AICI
+// ══════════════════════════════════════════
+const PASSWORD = "europa2025"; // ← schimbă cu parola dorită
+
+// ══════════════════════════════════════════
+// ITINERARY DATA
+// ══════════════════════════════════════════
+const DAYS_DATA = [
+  {
+    id: "z1", num: "1", date: "09 Iulie — Miercuri", route: ["Cluj","Budapesta"],
+    km: "~400 km", time: "06:00 → 13:00",
+    section: "🚗 Drumul spre Europa Centrală",
+    stops: [
+      { icon: "🏠", type: "start", name: "Plecare din Cluj — 06:00", desc: "Start devreme pentru a evita traficul. Autostrada A3 / E60 spre Oradea.", tags: [] },
+      { icon: "🏛️", type: "pause", name: "Oradea — oprire scurtă (~30 min)", desc: "Arhitectura Art Nouveau spectaculoasă. Palatul Vulturul Negru și cafea înainte de frontieră.", tags: ["pauză + cafea"] },
+      { icon: "🌉", type: "end", name: "Sosire Budapesta — ~10:00", desc: "Check-in sau depozit bagaje. Prânz la Nagyvásárcsarnok. Seara: Podul Lanțurilor și Dealul Buda.", tags: ["vizită"] }
+    ],
+    accom: { city: "Budapesta, Ungaria", nights: 1, icon: "🏨" },
+    stayDays: null
+  },
+  {
+    id: "z2", num: "2", date: "10 Iulie — Joi · Zi liberă", route: ["Budapesta","—"],
+    km: "0 km", time: "Zi liberă",
+    section: null,
+    stops: null,
+    accom: { city: "Budapesta, Ungaria", nights: null, icon: "🏨", note: "A doua noapte inclusă" },
+    stayDays: [
+      { title: "Dimineață", items: ["Băile Széchenyi — termalele faimoase, relaxare garantată", "Parcul Városliget — plimbare printre localnici"] },
+      { title: "După-amiază", items: ["Bastionul Pescarilor + Palatul Regal — panoramă superbă spre Dunăre", "Strada Andrássy (UNESCO) — bulevard elegant cu cafenele vieneze", "Piața Vörösmarty — înghețată obligatorie"] },
+      { title: "Seară", items: ["Ruin Bars în Cartierul Evreiesc — Szimpla Kert, locul iconic", "Croazieră opțională pe Dunăre — Parlamentul iluminat e magnific"] }
+    ]
+  },
+  {
+    id: "z3", num: "3", date: "11 Iulie — Vineri", route: ["Budapesta","Brno","Praga"],
+    km: "~525 km", time: "11:00 → 17:00",
+    section: null,
+    stops: [
+      { icon: "🚗", type: "start", name: "Plecare Budapesta — 11:00", desc: "Start relaxat după dimineața liberă. M1/E65 spre nord.", tags: [] },
+      { icon: "🍺", type: "pause", name: "Brno, Cehia — prânz (~75 min)", desc: "A doua metropolă a Cehiei, autentică și neaglomerată. Prânz în Piața Zelný trh. Castelul Špilberk vizibil de pe stradă.", tags: ["prânz","oprire urbană"] },
+      { icon: "🏰", type: "end", name: "Sosire Praga — ~16:30", desc: "Check-in și prima plimbare pe Podul Carol la apus — unul din cele mai frumoase momente posibile în Praga.", tags: ["vizită"] }
+    ],
+    accom: { city: "Praga, Cehia", nights: 2, icon: "🏨" },
+    stayDays: null
+  },
+  {
+    id: "z4", num: "4", date: "12 Iulie — Sâmbătă · Zi liberă", route: ["Praga","—"],
+    km: "0 km", time: "Zi liberă",
+    section: null,
+    stops: null,
+    accom: { city: "Praga, Cehia", nights: null, icon: "🏨", note: "A doua noapte inclusă" },
+    stayDays: [
+      { title: "Dimineață", items: ["Castelul Praga (Hradčany) — cel mai mare castel medieval din lume", "Catedrala Sf. Vit și Podul Carol — devreme, înainte de mulțimi"] },
+      { title: "După-amiază", items: ["Piața Orașului Vechi — Ceasul Astronomic la ora fixă", "Josefov — Cartierul Evreiesc cu sinagogi istorice", "Malá Strana — cafenele și grădini secrete"] },
+      { title: "Seară", items: ["Cina în Vinohrady sau Žižkov — cartierele localnicilor, autentice", "Pivnița Plzeňský Dvůr — Pilsner autentic la preț local"] }
+    ]
+  },
+  {
+    id: "z5", num: "5", date: "13 Iulie — Duminică", route: ["Praga","Dresda","Hanovra","Amsterdam"],
+    km: "~900 km", time: "08:00 → 18:00",
+    section: "✈️ Spre Vest — Germania & Benelux",
+    warning: "⚠️ Zi lungă (~10h condus). Alternați șoferii la fiecare 2-3h!",
+    stops: [
+      { icon: "🏞️", type: "scenic", name: "Dresda — pauză panoramică (45 min)", desc: "~90 km de Praga. Podul Augustusbrücke cu vederea Zwinger + Opera Semperoper de pe malul Elbei — una din cele mai frumoase siluete urbane din Germania.", tags: ["panoramă","pauză"] },
+      { icon: "🍽️", type: "pause", name: "Hanovra — prânz (~60 min)", desc: "Mijlocul drumului. Ieșiți 20 min: Noul Primărie lângă lacul Maschsee merită o fotografie rapidă.", tags: ["prânz"] },
+      { icon: "🚲", type: "end", name: "Sosire Amsterdam — ~17:30", desc: "Check-in și seara: plimbare pe canale (Herengracht, Prinsengracht) și cina în Jordaan.", tags: ["vizită"] }
+    ],
+    accom: { city: "Amsterdam, Olanda", nights: 2, icon: "🏨" },
+    stayDays: null
+  },
+  {
+    id: "z6", num: "6", date: "14 Iulie — Luni · Zi liberă", route: ["Amsterdam","—"],
+    km: "0 km", time: "Zi liberă",
+    section: null,
+    stops: null,
+    accom: { city: "Amsterdam, Olanda", nights: null, icon: "🏨", note: "A doua noapte inclusă" },
+    stayDays: [
+      { title: "Dimineață", items: ["Rijksmuseum — Rembrandt, Vermeer, Van Gogh", "Casa lui Anne Frank (rezervare online obligatorie în avans!)", "Piața Waterlooplein — piața de vechituri"] },
+      { title: "Excursie opțională", items: ["Zaanse Schans — morile de vânt tradiționale, 30 min cu mașina", "Volendam & Marken — sătucuri de pescari pe malul mării interioare"] },
+      { title: "Seară", items: ["Leidseplein — terase și muzică live", "Plimbare cu barca pe canale la apus — experiența esențială"] }
+    ]
+  },
+  {
+    id: "z7", num: "7", date: "15 Iulie — Marți", route: ["Amsterdam","Luxemburg","Schaan"],
+    km: "~800 km", time: "07:00 → 18:30",
+    section: "🏔️ Luxemburg & Alpii Elvețieni",
+    warning: "⚠️ Zi solicitantă. Plecare OBLIGATORIE la 07:00. Luxemburg max 1-1.5h!",
+    stops: [
+      { icon: "🏰", type: "visit", name: "Luxemburg City — vizită 90 min", desc: "Ville Haute (UNESCO): Place Guillaume II, Catedrala Notre-Dame, Chemin de la Corniche — 'cel mai frumos balcon din Europa'. Prânz rapid în Place d'Armes.", tags: ["vizită UNESCO","prânz rapid"] },
+      { icon: "🏘️", type: "scenic", name: "Colmar, Alsacia — pauză 45 min (opțional)", desc: "~200 km după Luxemburg. Unul din cele mai frumoase orășele din Europa — case cu schelet din lemn, canale colorate. Merită chiar și 30 min.", tags: ["panoramă"] },
+      { icon: "🇱🇮", type: "end", name: "Sosire Schaan, Liechtenstein — ~18:30", desc: "Una din cele mai mici țări din lume. Seara: plimbare în Vaduz, capitala la 4 km.", tags: [] }
+    ],
+    accom: { city: "Schaan, Liechtenstein", nights: 1, icon: "🏨" },
+    stayDays: null
+  },
+  {
+    id: "z8", num: "8", date: "16 Iulie — Miercuri", route: ["Schaan","St. Moritz","Rimini"],
+    km: "~430 km", time: "08:00 → 16:00",
+    section: null,
+    stops: [
+      { icon: "⛰️", type: "scenic", name: "St. Moritz, Elveția — 2-3h", desc: "~80 km de Schaan prin Alpi. Stațiunea de lux la 1800m, lac turcoaz. Cafea elvețiană + Engadiner Nusstorte. Fotografie obligatorie!", tags: ["alpi elvețieni","stațiune de lux"] },
+      { icon: "🏔️", type: "scenic", name: "Trecătoarea Maloja — drum alpin iconic", desc: "Coborârea din St. Moritz spre Italia: serpentine dramatice cu priveliști glaciare. Unul din cele mai frumoase drumuri din Europa.", tags: ["panoramă"] },
+      { icon: "🍕", type: "pause", name: "Lacul Como sau Lugano — prânz (~60 min)", desc: "Pe malul lacului Como (Italia) sau Lugano (Elveția). Prima pizza italiană a vacanței cu vedere spre lac!", tags: ["prânz italian","lac alpin"] },
+      { icon: "🏖️", type: "end", name: "Sosire Rimini — ~16:00", desc: "Prima atingere a Mării Adriatice! Seara în Porto Canale pentru aperitivo și fructe de mare.", tags: [] }
+    ],
+    accom: { city: "Rimini, Italia", nights: 5, icon: "🏖️" },
+    stayDays: null
+  },
+  {
+    id: "z9", num: "9–12", date: "17–20 Iulie — Zile libere Rimini", route: ["Rimini","—"],
+    km: "0–100 km", time: "Zile libere",
+    section: "🌊 Riviera Adriatică",
+    stops: null,
+    accom: { city: "Rimini, Italia", nights: null, icon: "🏖️", note: "5 nopți (continuare)" },
+    stayDays: [
+      { title: "Rimini — Must-see", items: ["Plajele Rimini — lungi, însorite, Adriatica caldă și liniștită", "Borgo San Giuliano — cartier de pescari cu murals (Federico Fellini era din Rimini!)", "Arco d'Augusto și Ponte di Tiberio — monumente romane", "Corso d'Augusto seara — gelato și plimbare"] },
+      { title: "Excursii de o zi", items: ["San Marino (25 km) — fortărețele medievale pe vârf de stâncă, panoramă 360°", "Ravenna (50 km) — mozaicuri bizantine UNESCO, printre cele mai frumoase din lume", "Gradara (35 km) — castelul medieval perfect conservat", "Riccione / Cattolica (15-30 km) — stațiuni animate"] },
+      { title: "Relaxare", items: ["Dimineți pe plajă + pesce fritto (pești adriatici prăjiți)", "Siesta de amiază — tradiția italiană", "Aperitivo la 18:00 — Spritz cu Aperol pe malul mării"] }
+    ]
+  },
+  {
+    id: "z13", num: "13", date: "20 Iulie — Duminică", route: ["Rimini","San Marino","Montepulciano","San Gimignano","Pisa"],
+    km: "~370 km", time: "08:00 → 18:00",
+    section: "🌿 Toscana & drumul spre casă",
+    stops: [
+      { icon: "🏰", type: "visit", name: "San Marino — 1h", desc: "Cele trei fortărețe medievale pe vârf de stâncă. Vederi spre Adriatică și Apenini.", tags: ["micro-stat UNESCO"] },
+      { icon: "🍷", type: "scenic", name: "Montepulciano — 45 min", desc: "Oraș renesans pe deal. Piazza Grande magnifică. Degustare de Vino Nobile di Montepulciano la o enotecă locală — obligatorie!", tags: ["toscana autentică","val d'orcia UNESCO"] },
+      { icon: "🗼", type: "scenic", name: "San Gimignano — 45 min", desc: "'Manhattan medieval' — 14 turnuri medievale. Înghețata de la Gelateria Dondoli a câștigat campionatul mondial!", tags: ["medieval UNESCO"] },
+      { icon: "⛪", type: "end", name: "Sosire Pisa — ~17:30", desc: "Piazza dei Miracoli cu Turnul Înclinat la apus. Cina în centrul vechi lângă Arno.", tags: [] }
+    ],
+    accom: { city: "Pisa, Italia", nights: 1, icon: "🏨" },
+    stayDays: null
+  },
+  {
+    id: "z14", num: "14", date: "21 Iulie — Luni", route: ["Pisa","Bologna","Veneția","Viena"],
+    km: "~900 km", time: "07:00 → 19:00",
+    section: null,
+    warning: "⚠️ Zi lungă (~10h condus). Alternați șoferii obligatoriu. Plecare devreme!",
+    stops: [
+      { icon: "🍝", type: "pause", name: "Bologna — prânz 60-75 min", desc: "'La Grassa' — capitala gastronomică a Italiei (~150 km de Pisa). Tagliatelle al ragù sau tortellini in brodo în orice tratorie. Espresso în Piazza Maggiore.", tags: ["gastronomie italiană"] },
+      { icon: "🛶", type: "visit", name: "Veneția / Mestre — pauză 45 min (opțional)", desc: "Parcați la Mestre și luați vaporetto 10 min spre Veneția. O plimbare de 45 min pe Canalul Mare este de neuitat.", tags: ["veneția UNESCO"] },
+      { icon: "🏔️", type: "scenic", name: "Trento / Innsbruck — pauză scurtă", desc: "Trecerea prin Dolomiti și Alpii Tirolezi este spectaculoasă. 20 min la Trento (castel medieval) sau Innsbruck (Triumphpforte).", tags: ["alpi tirolezi"] },
+      { icon: "🎵", type: "end", name: "Sosire Viena — ~19:00", desc: "Check-in și seara: Kärntner Strasse, Café Central. Ultima seară a vacanței în Europa.", tags: [] }
+    ],
+    accom: { city: "Viena, Austria", nights: 1, icon: "🏨" },
+    stayDays: null
+  },
+  {
+    id: "z15", num: "15", date: "22 Iulie — Marți", route: ["Viena","Bratislava","Cluj 🏠"],
+    km: "~620 km", time: "08:00 → 16:00",
+    section: null,
+    stops: [
+      { icon: "🏰", type: "visit", name: "Bratislava — oprire 45 min", desc: "~80 km de Viena. Centrul vechi compact și charming. Piața Hlavné námestie și Castelul din deal. Ultima cafea bună înainte de România.", tags: ["capitala slovaciei"] },
+      { icon: "🌻", type: "pause", name: "Debrecen sau Oradea — prânz final", desc: "~400 km de Viena. Gulaș maghiar sau mâncare românească la Oradea. Prânzul final al vacanței!", tags: ["prânz de întoarcere"] },
+      { icon: "🏠", type: "end", name: "Sosire Cluj — ~15:30", desc: "Acasă! 15 zile, 8 țări, ~5.100 km. O vacanță de neuitat! 🎉", tags: [] }
+    ],
+    accom: null,
+    stayDays: null
+  }
+];
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let firebaseData = {};
+let currentModal = null;
+let modalCallback = null;
+let isConnected = false;
+
+// ══════════════════════════════════════════
+// PASSWORD
+// ══════════════════════════════════════════
+function checkPassword() {
+  const val = document.getElementById('pwInput').value;
+  if (val === PASSWORD) {
+    sessionStorage.setItem('auth_europa2025', '1');
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    initApp();
+  } else {
+    const inp = document.getElementById('pwInput');
+    inp.classList.add('error');
+    document.getElementById('lockError').textContent = 'Parolă incorectă. Încearcă din nou.';
+    setTimeout(() => inp.classList.remove('error'), 500);
+    inp.value = '';
+    inp.focus();
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem('auth_europa2025');
+  location.reload();
+}
+
+document.getElementById('pwInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkPassword();
+  document.getElementById('lockError').textContent = '';
+});
+
+// Auto-login if session exists
+if (sessionStorage.getItem('auth_europa2025') === '1') {
+  document.getElementById('lockScreen').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  initApp();
+}
+
+// ══════════════════════════════════════════
+// FIREBASE
+// ══════════════════════════════════════════
+function initFirebase() {
+  if (!window._firebaseReady) {
+    document.getElementById('setupBanner').classList.add('show');
+    setSyncStatus('offline');
+    return;
+  }
+
+  const db = window._db;
+  const dbRef = window._dbRef;
+  const onValue = window._dbOnValue;
+
+  // Check if firebase is configured
+  try {
+    const tripRef = dbRef(db, 'trip2025');
+    onValue(tripRef, (snapshot) => {
+      firebaseData = snapshot.val() || {};
+      isConnected = true;
+      setSyncStatus('online');
+      renderDays();
+    }, (error) => {
+      console.warn('Firebase error:', error);
+      document.getElementById('setupBanner').classList.add('show');
+      setSyncStatus('offline');
+      renderDays();
+    });
+  } catch(e) {
+    document.getElementById('setupBanner').classList.add('show');
+    setSyncStatus('offline');
+  }
+}
+
+async function saveToFirebase(path, data) {
+  if (!window._firebaseReady || !isConnected) {
+    showToast('Offline — sincronizare indisponibilă', 'error');
+    return false;
+  }
+  try {
+    setSyncStatus('syncing');
+    const db = window._db;
+    const dbRef = window._dbRef;
+    const dbSet = window._dbSet;
+    await dbSet(dbRef(db, `trip2025/${path}`), data);
+    setSyncStatus('online');
+    return true;
+  } catch(e) {
+    setSyncStatus('online');
+    showToast('Eroare la salvare', 'error');
+    return false;
+  }
+}
+
+function setSyncStatus(status) {
+  const dot = document.getElementById('syncDot');
+  const bar = document.getElementById('connStatus');
+  dot.className = 'sync-indicator ' + (status === 'syncing' ? 'syncing' : status === 'offline' ? 'offline' : '');
+  if (status === 'online') {
+    bar.className = 'conn-status online';
+    bar.textContent = '● Conectat · sincronizare activă';
+  } else if (status === 'offline') {
+    bar.className = 'conn-status offline';
+    bar.textContent = '● Offline · datele se salvează local';
+  } else {
+    bar.className = 'conn-status online';
+    bar.textContent = '● Sincronizare...';
+  }
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+function initApp() {
+  document.addEventListener('firebaseReady', () => initFirebase(), { once: true });
+  if (window._firebaseReady) initFirebase();
+  else setTimeout(() => { if (!window._firebaseReady) { document.getElementById('setupBanner').classList.add('show'); renderDays(); setSyncStatus('offline'); } }, 3000);
+}
+
+// ══════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════
+function renderDays() {
+  const container = document.getElementById('daysContainer');
+  container.innerHTML = '';
+  let lastSection = null;
+
+  DAYS_DATA.forEach(day => {
+    if (day.section && day.section !== lastSection) {
+      const div = document.createElement('div');
+      div.className = 'section-divider';
+      div.innerHTML = `<div class="section-divider-line"></div><div class="section-divider-text">${day.section}</div><div class="section-divider-line"></div>`;
+      container.appendChild(div);
+      lastSection = day.section;
+    }
+    container.appendChild(buildDayCard(day));
+  });
+}
+
+function buildDayCard(day) {
+  const saved = firebaseData[day.id] || {};
+  const card = document.createElement('div');
+  card.className = 'day-card';
+  card.id = 'card_' + day.id;
+
+  // Route display
+  const routeHtml = day.route.map((r, i) =>
+    i < day.route.length - 1
+      ? `${r} <span class="arr">→</span> `
+      : r
+  ).join('');
+
+  card.innerHTML = `
+    <div class="day-header" onclick="toggleCard('${day.id}')">
+      <div class="day-num-col">
+        <span class="day-zi">Ziua</span>
+        <span class="day-nr">${day.num}</span>
+      </div>
+      <div class="day-info">
+        <div class="day-date">${day.date}</div>
+        <div class="day-route">${routeHtml}</div>
+      </div>
+      <div class="day-right">
+        <span class="day-km">${day.km}</span>
+        <span class="day-chevron">▼</span>
+      </div>
+    </div>
+    <div class="day-body" id="body_${day.id}">
+      ${day.warning ? `<div class="day-warning">${day.warning}</div>` : ''}
+      ${buildStopsHtml(day, saved)}
+      ${buildStayDaysHtml(day)}
+      ${buildAccomHtml(day, saved)}
+      ${buildNotesHtml(day, saved)}
+    </div>
+  `;
+  return card;
+}
+
+function buildStopsHtml(day, saved) {
+  const stops = saved.stops ? mergeStops(day.stops, saved.stops) : (day.stops || []);
+  if (!stops || stops.length === 0) return '';
+
+  const stopsHtml = stops.map((s, idx) => `
+    <div class="stop-item" id="stop_${day.id}_${idx}">
+      <div class="stop-dot dot-${s.type || 'pause'}">${s.icon || '📍'}</div>
+      <div class="stop-content">
+        <div class="stop-name">${s.name}</div>
+        <div class="stop-desc">${s.desc}</div>
+        ${s.tags && s.tags.length ? `<div class="tags">${s.tags.map(t => `<span class="tag tag-${getTagClass(t)}">${t}</span>`).join('')}</div>` : ''}
+        <div class="stop-edit-row">
+          <button class="stop-edit-btn" onclick="editStop('${day.id}', ${idx})">✏️ Editează</button>
+          ${idx >= (day.stops ? day.stops.length : 0) ? `<button class="stop-edit-btn del" onclick="deleteCustomStop('${day.id}', ${idx})">🗑️ Șterge</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  return `
+    <div class="stops-section">
+      <div class="section-label-sm">
+        Opriri & Program
+        <button class="add-btn" onclick="addStop('${day.id}')">＋ Adaugă oprire</button>
+      </div>
+      ${stopsHtml}
+    </div>
+  `;
+}
+
+function mergeStops(defaultStops, savedStops) {
+  const base = defaultStops ? [...defaultStops] : [];
+  if (savedStops) {
+    // Apply edits to existing stops
+    Object.keys(savedStops.edits || {}).forEach(idx => {
+      if (base[parseInt(idx)]) {
+        base[parseInt(idx)] = { ...base[parseInt(idx)], ...savedStops.edits[idx] };
+      }
+    });
+    // Add custom stops
+    (savedStops.custom || []).forEach(s => base.push(s));
+  }
+  return base;
+}
+
+function buildStayDaysHtml(day) {
+  if (!day.stayDays) return '';
+  return `<div class="stay-days">
+    ${day.stayDays.map(sd => `
+      <div class="stay-day">
+        <div class="stay-day-title">${sd.title}</div>
+        <ul class="stay-day-items">
+          ${sd.items.map(it => `<li>${it}</li>`).join('')}
+        </ul>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+function buildAccomHtml(day, saved) {
+  if (!day.accom) return '';
+  const a = day.accom;
+  const hotelName = saved.hotel_name || '';
+  const hotelAddr = saved.hotel_addr || '';
+  const hotelLink = saved.hotel_link || '';
+
+  return `
+    <div class="accom-section" id="accom_${day.id}">
+      <div class="accom-row">
+        <div class="accom-icon-box">${a.icon}</div>
+        <div class="accom-info-col">
+          <div class="accom-label-sm">${a.note || 'Cazare'}</div>
+          <div class="accom-name-display">${hotelName || a.city}</div>
+          ${hotelAddr ? `<div style="font-size:12px;color:var(--cream-dim);margin-top:2px">📍 ${hotelAddr}</div>` : ''}
+        </div>
+        ${a.nights ? `<div class="accom-nights-badge"><span class="accom-n">${a.nights}</span><span class="accom-nl">nopți</span></div>` : ''}
+      </div>
+      <div class="accom-edit-row">
+        <input class="accom-field" placeholder="Nume hotel / pensiune..." value="${hotelName}" id="acf_name_${day.id}" onchange="saveAccom('${day.id}')">
+        <input class="accom-field" placeholder="Adresă..." value="${hotelAddr}" id="acf_addr_${day.id}" onchange="saveAccom('${day.id}')">
+      </div>
+      <div class="accom-edit-row" style="margin-top:8px">
+        <input class="accom-field" placeholder="Link Booking / rezervare..." value="${hotelLink}" id="acf_link_${day.id}" onchange="saveAccom('${day.id}')">
+        ${hotelLink ? `<a href="${hotelLink}" target="_blank" class="accom-link-btn">🔗 Deschide</a>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function buildNotesHtml(day, saved) {
+  const notes = saved.notes || '';
+  const comments = saved.comments || [];
+
+  return `
+    <div class="notes-section">
+      <div class="section-label-sm">
+        Note & Comentarii
+        <button class="add-btn" onclick="addComment('${day.id}')">＋ Comentariu</button>
+      </div>
+      <textarea class="notes-textarea" id="notes_${day.id}" placeholder="Adaugă note pentru această zi... (link-uri, observații, idei...)">${notes}</textarea>
+      <div class="notes-actions">
+        <button class="save-btn" id="savebtn_${day.id}" onclick="saveNotes('${day.id}')">Salvează</button>
+      </div>
+      ${comments.length > 0 ? `
+        <div style="margin-top:12px">
+          ${comments.map((c, i) => `
+            <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:8px">
+              <div style="font-size:11px;color:var(--amber);font-family:'DM Mono',monospace;margin-bottom:4px">${c.author} · ${c.time}</div>
+              <div style="font-size:13px;color:var(--cream-dim);line-height:1.5">${c.text}</div>
+              <button class="stop-edit-btn del" style="margin-top:6px" onclick="deleteComment('${day.id}',${i})">🗑️</button>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════
+// TOGGLE CARD
+// ══════════════════════════════════════════
+function toggleCard(id) {
+  const card = document.getElementById('card_' + id);
+  card.classList.toggle('expanded');
+}
+
+// ══════════════════════════════════════════
+// SAVE NOTES
+// ══════════════════════════════════════════
+async function saveNotes(dayId) {
+  const notes = document.getElementById('notes_' + dayId).value;
+  const btn = document.getElementById('savebtn_' + dayId);
+  if (!firebaseData[dayId]) firebaseData[dayId] = {};
+  firebaseData[dayId].notes = notes;
+  const ok = await saveToFirebase(`${dayId}/notes`, notes);
+  if (ok !== false) {
+    btn.textContent = '✓ Salvat';
+    btn.classList.add('saved');
+    setTimeout(() => { btn.textContent = 'Salvează'; btn.classList.remove('saved'); }, 2000);
+    showToast('Note salvate! ✓', 'success');
+  }
+}
+
+// ══════════════════════════════════════════
+// SAVE ACCOMMODATION
+// ══════════════════════════════════════════
+async function saveAccom(dayId) {
+  const name = document.getElementById(`acf_name_${dayId}`)?.value || '';
+  const addr = document.getElementById(`acf_addr_${dayId}`)?.value || '';
+  const link = document.getElementById(`acf_link_${dayId}`)?.value || '';
+  if (!firebaseData[dayId]) firebaseData[dayId] = {};
+  firebaseData[dayId].hotel_name = name;
+  firebaseData[dayId].hotel_addr = addr;
+  firebaseData[dayId].hotel_link = link;
+  await saveToFirebase(dayId, { ...firebaseData[dayId], hotel_name: name, hotel_addr: addr, hotel_link: link });
+  showToast('Cazare salvată! 🏨', 'success');
+  refreshCard(dayId);
+}
+
+// ══════════════════════════════════════════
+// ADD / EDIT STOP
+// ══════════════════════════════════════════
+function addStop(dayId) {
+  showModal('Adaugă oprire', `
+    <div class="modal-field-group">
+      <label class="modal-label">Tip</label>
+      <select class="modal-select" id="m_type">
+        <option value="pause">🟢 Pauză / Masă</option>
+        <option value="visit">🔵 Vizită</option>
+        <option value="scenic">🟡 Panoramă</option>
+        <option value="start">⚪ Start</option>
+        <option value="end">🟠 Destinație</option>
+      </select>
+    </div>
+    <div class="modal-field-group">
+      <label class="modal-label">Emoji + Nume locație</label>
+      <input class="modal-input" id="m_name" placeholder="ex: 🍕 Florența — prânz rapid">
+    </div>
+    <div class="modal-field-group">
+      <label class="modal-label">Descriere</label>
+      <textarea class="modal-textarea" id="m_desc" placeholder="Detalii, recomandări, ore..."></textarea>
+    </div>
+    <div class="modal-field-group">
+      <label class="modal-label">Link Google Maps (opțional)</label>
+      <input class="modal-input" id="m_link" placeholder="https://maps.google.com/...">
+    </div>
+  `, async () => {
+    const stop = {
+      type: document.getElementById('m_type').value,
+      icon: document.getElementById('m_name').value.match(/^\p{Emoji}/u)?.[0] || '📍',
+      name: document.getElementById('m_name').value,
+      desc: document.getElementById('m_desc').value,
+      tags: [],
+      link: document.getElementById('m_link').value,
+      custom: true
+    };
+    if (!firebaseData[dayId]) firebaseData[dayId] = {};
+    if (!firebaseData[dayId].stops) firebaseData[dayId].stops = {};
+    if (!firebaseData[dayId].stops.custom) firebaseData[dayId].stops.custom = [];
+    firebaseData[dayId].stops.custom.push(stop);
+    await saveToFirebase(`${dayId}/stops/custom`, firebaseData[dayId].stops.custom);
+    showToast('Oprire adăugată! ✓', 'success');
+    refreshCard(dayId);
+  });
+}
+
+function editStop(dayId, idx) {
+  const day = DAYS_DATA.find(d => d.id === dayId);
+  const saved = firebaseData[dayId] || {};
+  const stops = mergeStops(day.stops, saved.stops);
+  const s = stops[idx];
+
+  showModal('Editează oprire', `
+    <div class="modal-field-group">
+      <label class="modal-label">Nume</label>
+      <input class="modal-input" id="m_name" value="${s.name}">
+    </div>
+    <div class="modal-field-group">
+      <label class="modal-label">Descriere</label>
+      <textarea class="modal-textarea" id="m_desc">${s.desc}</textarea>
+    </div>
+    <div class="modal-field-group">
+      <label class="modal-label">Link Google Maps (opțional)</label>
+      <input class="modal-input" id="m_link" value="${s.link || ''}">
+    </div>
+  `, async () => {
+    if (!firebaseData[dayId]) firebaseData[dayId] = {};
+    if (!firebaseData[dayId].stops) firebaseData[dayId].stops = {};
+    if (!firebaseData[dayId].stops.edits) firebaseData[dayId].stops.edits = {};
+    firebaseData[dayId].stops.edits[idx] = {
+      name: document.getElementById('m_name').value,
+      desc: document.getElementById('m_desc').value,
+      link: document.getElementById('m_link').value
+    };
+    await saveToFirebase(`${dayId}/stops/edits/${idx}`, firebaseData[dayId].stops.edits[idx]);
+    showToast('Oprire actualizată! ✓', 'success');
+    refreshCard(dayId);
+  });
+}
+
+async function deleteCustomStop(dayId, idx) {
+  const day = DAYS_DATA.find(d => d.id === dayId);
+  const defaultLen = day.stops ? day.stops.length : 0;
+  const customIdx = idx - defaultLen;
+  if (customIdx < 0) return;
+  if (!firebaseData[dayId]?.stops?.custom) return;
+  firebaseData[dayId].stops.custom.splice(customIdx, 1);
+  await saveToFirebase(`${dayId}/stops/custom`, firebaseData[dayId].stops.custom);
+  showToast('Oprire ștearsă', 'success');
+  refreshCard(dayId);
+}
+
+// ══════════════════════════════════════════
+// COMMENTS
+// ══════════════════════════════════════════
+function addComment(dayId) {
+  showModal('Adaugă comentariu', `
+    <div class="modal-field-group">
+      <label class="modal-label">Numele tău</label>
+      <input class="modal-input" id="m_author" placeholder="ex: Andrei" value="${localStorage.getItem('europa_name') || ''}">
+    </div>
+    <div class="modal-field-group">
+      <label class="modal-label">Comentariu</label>
+      <textarea class="modal-textarea" id="m_comment" placeholder="Idee, întrebare, sugestie..."></textarea>
+    </div>
+  `, async () => {
+    const author = document.getElementById('m_author').value || 'Anonim';
+    const text = document.getElementById('m_comment').value;
+    if (!text.trim()) return;
+    localStorage.setItem('europa_name', author);
+    const comment = { author, text, time: new Date().toLocaleDateString('ro-RO', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }) };
+    if (!firebaseData[dayId]) firebaseData[dayId] = {};
+    if (!firebaseData[dayId].comments) firebaseData[dayId].comments = [];
+    firebaseData[dayId].comments.push(comment);
+    await saveToFirebase(`${dayId}/comments`, firebaseData[dayId].comments);
+    showToast('Comentariu adăugat! 💬', 'success');
+    refreshCard(dayId);
+  });
+}
+
+async function deleteComment(dayId, idx) {
+  if (!firebaseData[dayId]?.comments) return;
+  firebaseData[dayId].comments.splice(idx, 1);
+  await saveToFirebase(`${dayId}/comments`, firebaseData[dayId].comments);
+  showToast('Comentariu șters', 'success');
+  refreshCard(dayId);
+}
+
+// ══════════════════════════════════════════
+// REFRESH CARD (without full re-render)
+// ══════════════════════════════════════════
+function refreshCard(dayId) {
+  const day = DAYS_DATA.find(d => d.id === dayId);
+  const card = document.getElementById('card_' + dayId);
+  if (!card) return;
+  const wasExpanded = card.classList.contains('expanded');
+  const newCard = buildDayCard(day);
+  if (wasExpanded) newCard.classList.add('expanded');
+  card.replaceWith(newCard);
+}
+
+// ══════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════
+function showModal(title, bodyHtml, onConfirm) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = bodyHtml;
+  modalCallback = onConfirm;
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(() => {
+    const first = document.querySelector('#modalBody input, #modalBody textarea');
+    if (first) first.focus();
+  }, 300);
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  modalCallback = null;
+}
+
+function closeModalOnBg(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+async function confirmModal() {
+  if (modalCallback) await modalCallback();
+  closeModal();
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+let toastTimer;
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function getTagClass(tag) {
+  if (tag.includes('pauză') || tag.includes('cafea')) return 'pause';
+  if (tag.includes('vizit') || tag.includes('UNESCO') || tag.includes('capital')) return 'vizita';
+  if (tag.includes('panoram') || tag.includes('alpi') || tag.includes('lac') || tag.includes('medieval')) return 'panorama';
+  if (tag.includes('prânz') || tag.includes('gastro') || tag.includes('pizza') || tag.includes('italian')) return 'pranz';
+  return 'vizita';
+}
+
+function showAbout() {
+  showModal('Despre aplicație', `
+    <div style="font-size:13px;color:var(--cream-dim);line-height:1.7">
+      <p style="margin-bottom:12px">🗺️ <strong style="color:var(--cream)">Europa 2025</strong> — aplicația privată a grupului nostru de vacanță.</p>
+      <p style="margin-bottom:8px">✏️ <strong style="color:var(--cream)">Ce poți face:</strong></p>
+      <ul style="padding-left:16px;margin-bottom:12px">
+        <li>Completează hotelurile și link-urile de rezervare</li>
+        <li>Adaugă note și idei pentru fiecare zi</li>
+        <li>Editează sau adaugă opriri pe traseu</li>
+        <li>Lasă comentarii pentru ceilalți membri</li>
+      </ul>
+      <p style="margin-bottom:8px">🔄 <strong style="color:var(--cream)">Sincronizare:</strong> Modificările tale se văd instant la toți membrii grupului.</p>
+      <p style="color:var(--amber)">Drum bun! 🚗💨</p>
+    </div>
+  `, () => {});
+  document.getElementById('modalConfirm').textContent = 'OK';
+}
+</script>
+</body>
+</html>
