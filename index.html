@@ -990,7 +990,7 @@ body {
 // ══════════════════════════════════════════
 // CONFIG — SCHIMBĂ PAROLA AICI
 // ══════════════════════════════════════════
-const PASSWORD = "europa2025"; // ← schimbă cu parola dorită
+const PASSWORD = "Europa2026"; // ← schimbă cu parola dorită
 
 // ══════════════════════════════════════════
 // ITINERARY DATA
@@ -1162,7 +1162,7 @@ let isConnected = false;
 function checkPassword() {
   const val = document.getElementById('pwInput').value;
   if (val === PASSWORD) {
-    sessionStorage.setItem('auth_europa2025', '1');
+    sessionStorage.setItem('auth_Europa2026', '1');
     document.getElementById('lockScreen').style.display = 'none';
     document.getElementById('app').classList.add('visible');
     initApp();
@@ -1177,7 +1177,7 @@ function checkPassword() {
 }
 
 function logout() {
-  sessionStorage.removeItem('auth_europa2025');
+  sessionStorage.removeItem('auth_Europa2026');
   location.reload();
 }
 
@@ -1187,7 +1187,7 @@ document.getElementById('pwInput').addEventListener('keydown', e => {
 });
 
 // Auto-login if session exists
-if (sessionStorage.getItem('auth_europa2025') === '1') {
+if (sessionStorage.getItem('auth_Europa2026') === '1') {
   document.getElementById('lockScreen').style.display = 'none';
   document.getElementById('app').classList.add('visible');
   initApp();
