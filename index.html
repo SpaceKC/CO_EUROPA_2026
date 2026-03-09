@@ -35,10 +35,10 @@
 </script>
 <style>
 :root {
-  --bg:#F5F0E8; --surface:#FFFFFF; --surface2:#F0EBE0; --surface3:#E8E0D0;
-  --border:#D0C8B8; --border-light:#B8B0A0;
-  --cream:#1A1610; --cream-dim:#4A4238;
-  --amber:#D4820A; --amber-light:#F0A830; --amber-dim:#7A4A05;
+  --bg:#F7F7F5; --surface:#FFFFFF; --surface2:#F2F2F0; --surface3:#E8E8E5;
+  --border:#DEDEDD; --border-light:#CACAC8;
+  --cream:#111111; --cream-dim:#555555;
+  --amber:#1A6BC4; --amber-light:#2980D4; --amber-dim:#D0E4F7;
   --terra:#C4622D; --terra-light:#E8834A;
   --sage:#5C8A5E; --sage-light:#7AAF7C;
   --blue:#3A6A9A; --blue-light:#5A8ABB;
@@ -512,9 +512,7 @@ function renderDays(){
   let lastSection=null;
   DAYS.forEach((day,idx)=>{
     if(day.section&&day.section!==lastSection){
-      const div=document.createElement("div");div.className="sec-div";
-      div.innerHTML=`<div class="sec-div-line"></div><div class="sec-div-text">${day.section}</div><div class="sec-div-line"></div>`;
-      c.appendChild(div);lastSection=day.section;
+      lastSection=day.section;
     }
     c.appendChild(buildAddDayBtn(idx));
     c.appendChild(buildDayCard(day,idx));
@@ -540,7 +538,7 @@ function buildDayCard(day,idx){
       <div class="day-info"><div class="day-date">${day.date}</div><div class="day-route">${routeHtml}</div></div>
       <div class="day-right">
         <span class="day-km">${day.km>0?"~"+day.km+" km":"Zi liberă"}</span>
-        <span class="weather-badge loading" id="wb_${day.id}">⏳ meteo</span>
+        <span id="wb_${day.id}"></span>
         <span class="day-chevron">▼</span>
       </div>
     </div>
