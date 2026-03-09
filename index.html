@@ -35,9 +35,9 @@
 </script>
 <style>
 :root {
-  --bg:#0F0E0C; --surface:#1A1814; --surface2:#242018; --surface3:#2E2A22;
-  --border:#3A342A; --border-light:#4A4238;
-  --cream:#F0E8D8; --cream-dim:#A09080;
+  --bg:#F5F0E8; --surface:#FFFFFF; --surface2:#F0EBE0; --surface3:#E8E0D0;
+  --border:#D0C8B8; --border-light:#B8B0A0;
+  --cream:#1A1610; --cream-dim:#4A4238;
   --amber:#D4820A; --amber-light:#F0A830; --amber-dim:#7A4A05;
   --terra:#C4622D; --terra-light:#E8834A;
   --sage:#5C8A5E; --sage-light:#7AAF7C;
@@ -398,8 +398,9 @@ function initFb(){
     const tripRef=window._dbRef(window._db,"trip2026");
     window._dbOnValue(tripRef,(snap)=>{
       fbData=snap.val()||{};isConnected=true;setSyncStatus("online");
-      DAYS=(fbData._days&&fbData._days.length>0)?fbData._days:JSON.parse(JSON.stringify(DEFAULT_DAYS));
+     DAYS=(fbData._days&&fbData._days.length>0)?fbData._days:JSON.parse(JSON.stringify(DEFAULT_DAYS));
       renderAll();
+      Object.keys(weatherCache).forEach(k=>delete weatherCache[k]); 
     },(err)=>{DAYS=JSON.parse(JSON.stringify(DEFAULT_DAYS));renderAll();setSyncStatus("offline");});
   }catch(e){DAYS=JSON.parse(JSON.stringify(DEFAULT_DAYS));renderAll();setSyncStatus("offline");}
 }
@@ -561,7 +562,7 @@ function buildDayCard(day,idx){
       ${buildNotesHtml(day,saved)}
     </div>`;
   card.querySelector(".day-header").addEventListener("click",()=>{
-    setTimeout(()=>{if(card.classList.contains("expanded"))loadWeatherForDay(day);},100);
+    setTimeout(()=>{if(card.classList.contains("expanded"))loadWeatherForDay(day);},150);
   });
   return card;
 }
@@ -846,7 +847,7 @@ function refreshCard(dayId){
   const nc=buildDayCard(day,DAYS.indexOf(day));
   if(wasExp)nc.classList.add("expanded");
   card.replaceWith(nc);
-  if(wasExp)loadWeatherForDay(day);
+  if(wasExp)setTimeout(()=>loadWeatherForDay(day),150);
 }
 
 function showModal(title,bodyHtml,onConfirm){
